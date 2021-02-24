@@ -9,10 +9,12 @@ export default class Chat extends React.Component {
 
   render() {
     let name = this.props.route.params.name;
+    let color = this.props.route.params.color || 'red'; 
     this.props.navigation.setOptions({ title: name });
 
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", 
+      backgroundColor: color }}>
         {/* <TextInput
           style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
           onChangeText={(name) => this.setState({ name })}
