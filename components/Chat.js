@@ -24,7 +24,7 @@ export default class Chat extends React.Component {
       storageBucket: "chat-app-dcceb.appspot.com",
       messagingSenderId: "274167868127",
       appId: "1:274167868127:web:76dae021bd7759d10fd76a",
-      measurementId: "G-Y8CLF5K208",
+      measurementId: "G-Y8CLF5K208"
     };
   
 
@@ -44,7 +44,7 @@ export default class Chat extends React.Component {
       messages.push({
         _id: data._id,
         text: data.text,
-        createdAt: data.createdAt.toDate(),
+        // createdAt: data.createdAt.toDate(),
         user: data.user,
       });
     });
@@ -64,14 +64,13 @@ export default class Chat extends React.Component {
   }
 
   onSend(messages = []) {
-    this.setState(
-      (previousState) => ({
-        messages: GiftedChat.append(previousState.messages, messages),
-      }),
-      () => {
-        this.addMessage();
-      }
-    );
+  this.setState(
+    (previousState) => ({
+    messages: GiftedChat.append(previousState.messages, messages),
+    }),
+    () => {
+    this.addMessage();
+    });
   }
 
   renderBubble(props) {
