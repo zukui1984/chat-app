@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Platform, KeyboardAvoidingView } from "react-native";
 import { GiftedChat, Bubble, InputToolbar } from "react-native-gifted-chat";
-import AsyncStorage from '@react-native-community/async-storage';
-import NetInfo from '@react-native-community/netinfo';
+import AsyncStorage from "@react-native-community/async-storage";
+import NetInfo from "@react-native-community/netinfo";
 
 const firebase = require("firebase");
 require("firebase/firestore");
@@ -65,23 +65,21 @@ export default class Chat extends React.Component {
   }
 
   onSend(messages = []) {
-    this.setState((previousState) => ({
+    this.setState(
+      (previousState) => ({
         messages: GiftedChat.append(previousState.messages, messages),
       }),
       () => {
         this.addMessage();
         this.saveMessages();
-    });
+      }
+    );
   }
 
   renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
-      return(
-        <InputToolbar
-        {...props}
-        />
-      );
+      return <InputToolbar {...props} />;
     }
   }
 
@@ -99,22 +97,24 @@ export default class Chat extends React.Component {
   }
 
   async getMessages() {
-    let messages = '';
+    let messages = "";
     try {
-      messages = await AsyncStorage.getItem('messages') || [];
+      messages = (await AsyncStorage.getItem("messages")) || [];
       this.setState({
-        messages: JSON.parse(messages)
+        messages: JSON.parse(messages),
       });
     } catch (error) {
       console.log(error.message);
     }
-  };
-
+  }
 
   // Saves all messages
   async saveMessages() {
     try {
-      await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
+      await AsyncStorage.setItem(
+        "messages",
+        JSON.stringify(this.state.messages)
+      );
     } catch (error) {
       console.log(error.message);
     }
@@ -123,38 +123,38 @@ export default class Chat extends React.Component {
   // Delete all messages
   async deleteMessages() {
     try {
-      await AsyncStorage.removeItem('messages');
+      await AsyncStorage.removeItem("messages");
       this.setState({
-        messages: []
-      })
+        messages: [],
+      });
     } catch (error) {
       console.log(error.message);
     }
   }
 
   componentDidMount() {
-    NetInfo.fetch().then(connection => {
+    NetInfo.fetch().then((connection) => {
       if (connection.isConnected) {
-        console.log('online');
+        console.log("online");
+        this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
+          if (!user) {
+            firebase.auth().signInAnonymously();
+          }
+          this.setState({
+            uid: user.uid,
+            messages: [],
+          });
+          this.unsubscribe = this.referenceChatMessages
+            .orderBy("createdAt", "desc")
+            .onSnapshot(this.onCollectionUpdate);
+        });
       } else {
-        console.log('offline');
+        console.log("offline");
         this.setState({
-          isConnected: false
+          isConnected: false,
         });
         this.getMessages();
       }
-    });
-    this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-     await firebase.auth().signInAnonymously();
-      }
-      this.setState({
-        uid: user.uid,
-        messages: [],
-      });
-      this.unsubscribe = this.referenceChatMessages
-        .orderBy("createdAt", "desc")
-        .onSnapshot(this.onCollectionUpdate);
     });
   }
 
