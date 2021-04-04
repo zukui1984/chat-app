@@ -6,7 +6,7 @@ A simple React Native application that uses Expo's gifted-chat and Google Fireba
 
 ![pic a](https://user-images.githubusercontent.com/71074389/112532873-a0b2e480-8da9-11eb-86ce-87d7bc87370b.JPG)
 
-https://user-images.githubusercontent.com/71074389/112532933-b1fbf100-8da9-11eb-9556-18671fd6d7c2.mp4
+[Clip](https://user-images.githubusercontent.com/71074389/112532933-b1fbf100-8da9-11eb-9556-18671fd6d7c2.mp4)
  
 
 ## Key Features
